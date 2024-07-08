@@ -6,9 +6,17 @@ from fast_zero.app import app
 
 
 def test_read_root_deve_retornar_ok_e_ola_mundo():
-    client = TestClient(app)  #arrange
+    client = TestClient(app)
 
-    response = client.get('/') #action
+    response = client.get('/')
 
-    assert response.status_code == HTTPStatus.OK  #assert
-    assert response.json == {'Teste, Ola Mundo'}
+    assert response.status_code == HTTPStatus.OK
+    assert response.json() == {'message': 'Ola Mundo'}
+
+
+def test_render_html():
+    client = TestClient(app)
+
+    response = client.get('/index')
+
+    assert response.status_code == HTTPStatus.OK
