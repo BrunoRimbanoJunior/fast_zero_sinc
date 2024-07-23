@@ -36,6 +36,10 @@ async def read_item(request: Request):
 mas o schema Public não, entao o pydantic, não
 retornara a senha."""
 
+"""o userSchema é o esquema ou contrato de entrada
+e o response_model é a resposta após o processamento.
+Ambos processam estruturas de dados."""
+
 
 @app.post(
     '/users/', status_code=HTTPStatus.CREATED, response_model=UserPublicSchema

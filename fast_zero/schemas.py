@@ -1,5 +1,7 @@
 from pydantic import BaseModel, EmailStr
 
+# Utilizando para criar os tipos de dados para documentação e validação
+
 
 class Message(BaseModel):
     message: str
