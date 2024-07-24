@@ -14,7 +14,7 @@ em linguagem sql """
 class User:
     __tablename__ = 'users'
     # dentro do mapped_column é onde criamos as restriçoes SQL
-    # init = False é o autoincrement
+    # init = False, é quando um argumento não é passado pela api
     id: Mapped[int] = mapped_column(init=False, primary_key=True)
     username: Mapped[str] = mapped_column(unique=True)
     password: Mapped[str]
@@ -23,5 +23,4 @@ class User:
         init=False, server_default=func.now()
     )
     update_at: Mapped[datetime] = mapped_column(
-        init=False, onupdate=func.now()
-    )
+        init=False, server_default=func.now())

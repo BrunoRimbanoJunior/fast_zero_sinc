@@ -4,7 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
 from fast_zero.app import app
-from fast_zero.model import table_registry
+from fast_zero.models import table_registry
 
 
 """O arquivo conftest ou arquivo de configuracao do teste,
