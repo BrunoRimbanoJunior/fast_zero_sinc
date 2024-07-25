@@ -1,6 +1,4 @@
-from pydantic import BaseModel, EmailStr
-
-# Utilizando para criar os tipos de dados para documentação e validação
+from pydantic import BaseModel, ConfigDict, EmailStr
 
 
 class Message(BaseModel):
@@ -13,15 +11,12 @@ class UserSchema(BaseModel):
     password: str
 
 
-class UserDB(UserSchema):
-    id: int
-
-
-class UserPublicSchema(BaseModel):
+class UserPublic(BaseModel):
     id: int
     username: str
     email: EmailStr
+    model_config = ConfigDict(from_attributes=True)
 
 
 class UserList(BaseModel):
-    users: list[UserPublicSchema]
+    users: list[UserPublic]
