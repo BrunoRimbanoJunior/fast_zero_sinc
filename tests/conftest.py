@@ -7,6 +7,7 @@ from sqlalchemy.pool import StaticPool
 from fast_zero.app import app
 from fast_zero.database import get_session  # type: ignore
 from fast_zero.models import User, table_registry
+from fast_zero.security import get_password_hash
 
 """O arquivo conftest ou arquivo de configuracao do teste,
 deve conter trechos de codigos que serão utilizados varias
@@ -59,9 +60,25 @@ def session():
 
 @pytest.fixture
 def user(session):
-    user = User(username='teste', email='teste@gmail.com', password='012345')
+    pwd = '012345'
+    user = User(
+        username='teste',
+        email='teste@gmail.com',
+        password=get_password_hash(pwd),
+    )
     session.add(user)
     session.commit()
     session.refresh(user)
+    user.clean_password = pwd
 
     return user
+
+
+# gera os tokens para os testes
+@pytest.fixture
+def token(client, user):
+    response = client.post(
+        '/token',
+        data={'username': user.email, 'password': user.clean_password},
+    )
+    return response.json()['access_token']
