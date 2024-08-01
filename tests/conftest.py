@@ -1,3 +1,4 @@
+import factory
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
@@ -17,6 +18,17 @@ Neste cado temos o client da Api e a Conexão com o banco de dados
 
 Principio do DRY, não repetir codigo.
 """
+
+
+class UserFactory(factory.Factory):
+    class Meta:
+        model = User
+
+    # com base no modelo que ja temos de User, vamos utilizar
+    # o factory para construir os modelos para o SQLAlchemy
+    username = factory.Sequence(lambda n: f'test{n}')
+    email = factory.LazyAttribute(lambda obj: f'{obj.username}@test.com')
+    password = factory.LazyAttribute(lambda obj: f'{obj.username}@example.com')
 
 
 @pytest.fixture
@@ -61,11 +73,21 @@ def session():
 @pytest.fixture
 def user(session):
     pwd = '012345'
-    user = User(
-        username='teste',
-        email='teste@gmail.com',
-        password=get_password_hash(pwd),
-    )
+    user = UserFactory(password=get_password_hash(pwd))
+
+    session.add(user)
+    session.commit()
+    session.refresh(user)
+    user.clean_password = pwd
+
+    return user
+
+
+@pytest.fixture
+def other_user(session):
+    pwd = '012345'
+    user = UserFactory(password=get_password_hash(pwd))
+
     session.add(user)
     session.commit()
     session.refresh(user)

@@ -3,7 +3,7 @@ from http import HTTPStatus
 
 from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
-from jwt import DecodeError, decode, encode
+from jwt import DecodeError, ExpiredSignatureError, decode, encode
 from pwdlib import PasswordHash
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -17,6 +17,7 @@ from fast_zero.settings import Settings
 pwd_context = PasswordHash.recommended()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl='auth/token')
 settings = Settings()
+PYTHONTZPATH = ''
 
 
 def get_password_hash(password: str):
@@ -27,9 +28,9 @@ def verify_password(plain_password: str, hashed_password: str):
     return pwd_context.verify(plain_password, hashed_password)
 
 
-def create_acess_token(data: dict):
+def create_access_token(data: dict):
     to_encode = data.copy()
-    expire = datetime.now(tz=ZoneInfo('UTC')) + timedelta(
+    expire = datetime.now(tz=ZoneInfo('America/Sao_Paulo')) + timedelta(
         minutes=settings.ACESS_TOKEN_EXPIRE_MINUTES
     )
     to_encode.update({'exp': expire})
@@ -57,6 +58,8 @@ def get_current_user(
         if not username:
             raise credentials_exception
         token_data = TokenData(username=username)
+    except ExpiredSignatureError:
+        raise credentials_exception
     except DecodeError:
         raise credentials_exception
 

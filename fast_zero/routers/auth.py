@@ -11,7 +11,8 @@ from fast_zero.schemas import (
     Token,
 )
 from fast_zero.security import (
-    create_acess_token,
+    create_access_token,
+    get_current_user,
     get_session,
     verify_password,
 )
@@ -33,5 +34,14 @@ def login_for_acess_token(
             detail='Incorrect email or password',
         )
     else:
-        acess_token = create_acess_token(data={'sub': user.email})
+        acess_token = create_access_token(data={'sub': user.email})
         return {'access_token': acess_token, 'token_type': 'Bearer'}
+
+
+@router.post('/refresh_token', response_model=Token)
+def refresh_access_token(
+    user: User = Depends(get_current_user),
+):
+    new_access_token = create_access_token(data={'sub': user.email})
+
+    return {'access_token': new_access_token, 'token_type': 'bearer'}

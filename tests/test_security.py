@@ -2,7 +2,7 @@ from http import HTTPStatus
 
 from jwt import decode
 
-from fast_zero.security import create_acess_token
+from fast_zero.security import create_access_token
 from fast_zero.settings import Settings
 
 settings = Settings()
@@ -10,7 +10,7 @@ settings = Settings()
 
 def test_jwt():
     data = {'sub': 'test@test.com'}
-    token = create_acess_token(data)
+    token = create_access_token(data)
 
     result = decode(
         token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
