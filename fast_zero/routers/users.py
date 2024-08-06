@@ -46,7 +46,7 @@ e só pode ser excluido o mesmo usuario"""
 # Buscar a lista de usuarios cadastrados
 @router.get('/', response_model=UserList)
 def read_users(session: T_Session, limit: int = 10, offset: int = 0):
-    db_user = session.scalars(select(User).limit(limit).offset(offset)).all()
+    db_user = session.scalars(select(User).offset(offset).limit(limit)).all()
     return {'users': db_user}
 
 
@@ -91,7 +91,7 @@ def user_update(
 def delete_user(
     current_user: T_CurrentUser,
     user_id: int,
-    session: Session = Depends(get_session),
+    session: T_Session,
 ):
     if current_user.id != user_id:
         raise HTTPException(

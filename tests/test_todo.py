@@ -1,7 +1,7 @@
 from http import HTTPStatus
 
 from fast_zero.schemas import TodoState
-from tests.conftest import TodoFactory
+from tests.factories import TodoFactory
 
 
 def test_create_todo(client, token):

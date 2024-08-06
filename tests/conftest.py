@@ -1,15 +1,14 @@
-import factory
-import factory.fuzzy
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
-from sqlalchemy.pool import StaticPool
+from testcontainers.postgres import PostgresContainer
 
 from fast_zero.app import app
 from fast_zero.database import get_session  # type: ignore
-from fast_zero.models import Todo, TodoState, User, table_registry
+from fast_zero.models import table_registry
 from fast_zero.security import get_password_hash
+from tests.factories import UserFactory
 
 """O arquivo conftest ou arquivo de configuracao do teste,
 deve conter trechos de codigos que serão utilizados varias
@@ -21,25 +20,24 @@ Principio do DRY, não repetir codigo.
 """
 
 
-class UserFactory(factory.Factory):
-    class Meta:
-        model = User
+@pytest.fixture(scope='session')
+def engine():
+    with PostgresContainer('postgres:16', driver='psycopg') as postgres:
+        _engine = create_engine(postgres.get_connection_url())
 
-    # com base no modelo que ja temos de User, vamos utilizar
-    # o factory para construir os modelos para o SQLAlchemy
-    username = factory.Sequence(lambda n: f'test{n}')
-    email = factory.LazyAttribute(lambda obj: f'{obj.username}@test.com')
-    password = factory.LazyAttribute(lambda obj: f'{obj.username}@example.com')
+        with _engine.begin():
+            yield _engine
 
 
-class TodoFactory(factory.Factory):
-    class Meta:
-        model = Todo
+@pytest.fixture
+def session(engine):
+    table_registry.metadata.create_all(engine)
 
-    title = factory.Faker('text')
-    description = factory.Faker('text')
-    state = factory.fuzzy.FuzzyChoice(TodoState)
-    user_id = 1
+    with Session(engine) as session:
+        yield session
+        session.rollback()
+
+    table_registry.metadata.drop_all(engine)
 
 
 @pytest.fixture
@@ -64,21 +62,6 @@ def client(session):
 
 """para evitar o erro de mult_threads do sqlalchemy adcionamos
 o connect_args, e o StaticPool"""
-
-
-@pytest.fixture
-def session():
-    engine = create_engine(
-        'sqlite:///:memory:',
-        connect_args={'check_same_thread': False},
-        poolclass=StaticPool,
-    )
-    table_registry.metadata.create_all(engine)
-
-    with Session(engine) as session:
-        yield session
-
-    table_registry.metadata.drop_all(engine)
 
 
 @pytest.fixture
