@@ -1,17 +1,11 @@
-import os
-
-# from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
 from fast_zero.settings import Settings
 
-# load_dotenv()
-
-database_url = os.getenv(Settings().DATABASE_URL)
-engine = create_engine(database_url)
+engine = create_engine(Settings().DATABASE_URL)
 
 
-def get_session():
+def get_session():  # pragma: no cover
     with Session(engine) as session:
         yield session
