@@ -1,6 +1,6 @@
 from http import HTTPStatus
 
-from fast_zero_sinc.schemas import TodoState
+from fast_zero.schemas import TodoState
 from tests.factories import TodoFactory
 
 

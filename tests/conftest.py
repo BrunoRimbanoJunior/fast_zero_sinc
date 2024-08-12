@@ -4,10 +4,10 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 from testcontainers.postgres import PostgresContainer
 
-from fast_zero_sinc.app import app
-from fast_zero_sinc.database import get_session  # type: ignore
-from fast_zero_sinc.models import table_registry
-from fast_zero_sinc.security import get_password_hash
+from fast_zero.app import app
+from fast_zero.database import get_session  # type: ignore
+from fast_zero.models import table_registry
+from fast_zero.security import get_password_hash
 from tests.factories import UserFactory
 
 """O arquivo conftest ou arquivo de configuracao do teste,
