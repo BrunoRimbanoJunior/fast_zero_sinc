@@ -2,16 +2,9 @@ name: Pipeline
 on: [push, pull_request]
 
 
-
-
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
-    
-    permissions:
-      contents: read
-      secrets: read  
-
 
     env:
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
@@ -19,8 +12,6 @@ jobs:
       ALGORITHM: ${{ secrets.ALGORITHM }}
       ACCESS_TOKEN_EXPIRE_MINUTES: ${{ secrets.ACCESS_TOKEN_EXPIRE_MINUTES }}
 
-    
-    
     steps:
       - name: Verificar as variaveis de ambiente
         run: echo $DATABASE_URL
