@@ -1,6 +1,6 @@
 from http import HTTPStatus
 
-from fast_zero.schemas import UserPublic
+from fast_zero_sinc.schemas import UserPublic
 
 # def test_render_html(client):
 #     response = client.get('/index')

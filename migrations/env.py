@@ -3,8 +3,8 @@ from logging.config import fileConfig
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
-from fast_zero.models import table_registry
-from fast_zero.settings import Settings
+from fast_zero_sinc.models import table_registry
+from fast_zero_sinc.settings import Settings
 
 from alembic import context
 

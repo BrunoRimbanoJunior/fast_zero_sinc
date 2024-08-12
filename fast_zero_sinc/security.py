@@ -9,10 +9,10 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 from zoneinfo import ZoneInfo
 
-from fast_zero.database import get_session
-from fast_zero.models import User
-from fast_zero.schemas import TokenData
-from fast_zero.settings import Settings
+from fast_zero_sinc.database import get_session
+from fast_zero_sinc.models import User
+from fast_zero_sinc.schemas import TokenData
+from fast_zero_sinc.settings import Settings
 
 pwd_context = PasswordHash.recommended()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl='auth/token')

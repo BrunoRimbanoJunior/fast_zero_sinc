@@ -2,8 +2,8 @@ from http import HTTPStatus
 
 from fastapi import FastAPI
 
-from fast_zero.routers import auth, todos, users
-from fast_zero.schemas import (
+from fast_zero_sinc.routers import auth, todos, users
+from fast_zero_sinc.schemas import (
     Message,
 )
 

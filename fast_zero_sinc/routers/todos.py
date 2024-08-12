@@ -5,16 +5,16 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from fast_zero.database import get_session
-from fast_zero.models import Todo, TodoState, User
-from fast_zero.schemas import (
+from fast_zero_sinc.database import get_session
+from fast_zero_sinc.models import Todo, TodoState, User
+from fast_zero_sinc.schemas import (
     Message,
     TodoList,
     TodoPublic,
     TodoSchema,
     TodoUpdate,
 )
-from fast_zero.security import get_current_user
+from fast_zero_sinc.security import get_current_user
 
 router = APIRouter(prefix='/todos', tags=['todos'])
 T_Session = Annotated[Session, Depends(get_session)]
