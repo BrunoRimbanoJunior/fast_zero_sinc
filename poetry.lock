@@ -282,6 +282,20 @@ files = [
 ]
 
 [[package]]
+name = "cleanpy"
+version = "0.5.0"
+description = "cleanpy is a CLI tool to remove caches and temporary files that related to Python."
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "cleanpy-0.5.0-py3-none-any.whl", hash = "sha256:061c3c0ec1d44a89151298257ff0217be33f92be890a5a04088e04a22ff1fb69"},
+    {file = "cleanpy-0.5.0.tar.gz", hash = "sha256:58a54c909b2626a5b54efaff8b6416130ebef57fbe225ac4b411d3507c327c65"},
+]
+
+[package.extras]
+test = ["pytest", "subprocrunner (>=2.0.1)"]
+
+[[package]]
 name = "click"
 version = "8.1.7"
 description = "Composable command line interface toolkit"
@@ -2172,4 +2186,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12.4"
-content-hash = "5d35bbde5e419b56c585b907bb8028fad84b8c0bfaff38fadea728f63555de5f"
+content-hash = "dfc10e9a866b628724feff161565ae833998fafafa5f3b4cae881ada032a56ce"
